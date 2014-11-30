@@ -9,17 +9,10 @@
 import WatchKit
 import Foundation
 
-enum Operation {
-    case Unknown, Sum, Subtraction, Multiplication, Division
-}
-
 class InterfaceController: WKInterfaceController {
 
     @IBOutlet weak var resultLabel: WKInterfaceLabel!
-
-    private var lastResultNumber: String?
     private var displayNumber: String = "0"
-    private var currentOperation = Operation.Unknown
     
     override init(context: AnyObject?) {
         // Initialize variables here.
@@ -42,10 +35,9 @@ class InterfaceController: WKInterfaceController {
     }
 
     @IBAction func clear() {
-        lastResultNumber = nil
+        Calc.shared.clear()
         displayNumber = "0"
         resultLabel.setText(displayNumber)
-        currentOperation = .Unknown
     }
 
     @IBAction func remove() {
@@ -78,24 +70,10 @@ class InterfaceController: WKInterfaceController {
     }
 
     @IBAction func equal() {
-        switch currentOperation {
-        case .Sum:
-            let result = ((lastResultNumber ?? "0") as NSString).floatValue + (displayNumber as NSString).floatValue
-            displayNumber = NSString(format: "%.1f", result)
-        case .Subtraction:
-            let result = ((lastResultNumber ?? "0") as NSString).floatValue - (displayNumber as NSString).floatValue
-            displayNumber = NSString(format: "%.1f", result)
-        case .Multiplication:
-            let result = ((lastResultNumber ?? "0") as NSString).floatValue * (displayNumber as NSString).floatValue
-            displayNumber = NSString(format: "%.1f", result)
-        case .Division:
-            let result = ((lastResultNumber ?? "0") as NSString).floatValue / (displayNumber as NSString).floatValue
-            displayNumber = NSString(format: "%.1f", result)
-        case _: break
-        }
+        Calc.shared.calculate((displayNumber as NSString).floatValue)
+        displayNumber = NSString(format: "%.1f", Calc.shared.result)
         resultLabel.setText(displayNumber)
-        lastResultNumber = nil
-        currentOperation = .Unknown
+        Calc.shared.clear()
     }
 
     @IBAction func zero() {
@@ -139,10 +117,10 @@ class InterfaceController: WKInterfaceController {
     }
 
     func saveOperation(op: Operation) {
-        lastResultNumber = displayNumber
+        Calc.shared.result = (displayNumber as NSString).floatValue
+        Calc.shared.operation = op
         displayNumber = "0"
         resultLabel.setText(displayNumber)
-        currentOperation = op
     }
 
     func addToDisplay(stringToAdd: String) {
