@@ -143,13 +143,16 @@
                     </items>
                     <menu key="menu" id="Bqa-TB-ecd">
                         <items>
-                            <menuItem title="Menu Item" icon="trash" id="npM-VD-IKv" userLabel="Clear">
+                            <menuItem title="Clear" icon="trash" id="npM-VD-IKv" userLabel="Clear">
                                 <connections>
                                     <action selector="clear" destination="AgC-eL-Hgc" id="hhc-Uk-VvF"/>
                                 </connections>
                             </menuItem>
                         </items>
                     </menu>
+                    <connections>
+                        <outlet property="resultLabel" destination="Dp4-RJ-dpP" id="Lxg-wG-d7T"/>
+                    </connections>
                 </controller>
             </objects>
         </scene>
