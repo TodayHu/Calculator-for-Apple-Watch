@@ -17,9 +17,9 @@ class InterfaceController: WKInterfaceController {
 
     @IBOutlet weak var resultLabel: WKInterfaceLabel!
 
-    private var previousNumber: String?
+    private var lastResultNumber: String?
     private var displayNumber: String = "0"
-    private var operation = Operation.Unknown
+    private var currentOperation = Operation.Unknown
     
     override init(context: AnyObject?) {
         // Initialize variables here.
@@ -42,10 +42,10 @@ class InterfaceController: WKInterfaceController {
     }
 
     @IBAction func clear() {
-        previousNumber = nil
+        lastResultNumber = nil
         displayNumber = "0"
         resultLabel.setText(displayNumber)
-        operation = .Unknown
+        currentOperation = .Unknown
     }
 
     @IBAction func remove() {
@@ -78,24 +78,24 @@ class InterfaceController: WKInterfaceController {
     }
 
     @IBAction func equal() {
-        switch operation {
+        switch currentOperation {
         case .Sum:
-            let result = ((previousNumber ?? "0") as NSString).floatValue + (displayNumber as NSString).floatValue
+            let result = ((lastResultNumber ?? "0") as NSString).floatValue + (displayNumber as NSString).floatValue
             displayNumber = NSString(format: "%.1f", result)
         case .Subtraction:
-            let result = ((previousNumber ?? "0") as NSString).floatValue - (displayNumber as NSString).floatValue
+            let result = ((lastResultNumber ?? "0") as NSString).floatValue - (displayNumber as NSString).floatValue
             displayNumber = NSString(format: "%.1f", result)
         case .Multiplication:
-            let result = ((previousNumber ?? "0") as NSString).floatValue * (displayNumber as NSString).floatValue
+            let result = ((lastResultNumber ?? "0") as NSString).floatValue * (displayNumber as NSString).floatValue
             displayNumber = NSString(format: "%.1f", result)
         case .Division:
-            let result = ((previousNumber ?? "0") as NSString).floatValue / (displayNumber as NSString).floatValue
+            let result = ((lastResultNumber ?? "0") as NSString).floatValue / (displayNumber as NSString).floatValue
             displayNumber = NSString(format: "%.1f", result)
         case _: break
         }
         resultLabel.setText(displayNumber)
-        previousNumber = nil
-        operation = .Unknown
+        lastResultNumber = nil
+        currentOperation = .Unknown
     }
 
     @IBAction func zero() {
@@ -139,10 +139,10 @@ class InterfaceController: WKInterfaceController {
     }
 
     func saveOperation(op: Operation) {
-        previousNumber = displayNumber
+        lastResultNumber = displayNumber
         displayNumber = "0"
         resultLabel.setText(displayNumber)
-        operation = op
+        currentOperation = op
     }
 
     func addToDisplay(stringToAdd: String) {
