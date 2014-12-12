@@ -14,12 +14,8 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet weak var resultLabel: WKInterfaceLabel!
     private var displayNumber: String = "0"
     
-    override init(context: AnyObject?) {
-        // Initialize variables here.
-        super.init(context: context)
-        
-        // Configure interface objects here.
-        NSLog("%@ init", self)
+    override func awakeWithContext(context: AnyObject!) {
+        super.awakeWithContext(context)
     }
 
     override func willActivate() {
